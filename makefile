@@ -1,6 +1,8 @@
 PM2=node_modules/.bin/pm2
 
 install:
+	touch channels_ids
+	cp -n .env.dist .env
 	npm install
 
 start:
