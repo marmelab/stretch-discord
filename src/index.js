@@ -19,7 +19,7 @@ const connect = async () => {
 };
 
 const getStoredChannelsIds = async (filename = "./channels_ids") => {
-  const channelsRaw = await fs.readFileSync("./channels_ids", {
+  const channelsRaw = await fs.readFileSync(filename, {
     encoding: "utf8",
   });
   const channelsIds = channelsRaw
@@ -42,9 +42,7 @@ const run = async () => {
     const newChannel = await actions.getChannel(channelId);
     channels.push(newChannel);
   });
-
-  // send stretching
-  cron.schedule("*/10 * * * * *", sendStretchReminder(channels));
+  cron.schedule(process.env.CRON_CONFIG, sendStretchReminder(channels));
 };
 
 run();

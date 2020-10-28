@@ -11,12 +11,13 @@ export default {
     const channelsIds = channelsRaw.split(",");
 
     if (channelsIds.includes(newChannelId)) {
-      console.log("Already Stretching !");
+      message.channel.send("Je suis déjà là :wink:");
     } else {
       const newChannelsIds = [...channelsIds, newChannelId].filter(
         (chanId) => chanId.length > 0
       );
       fs.writeFileSync("./channels_ids", newChannelsIds.join(","));
+      message.channel.send("Je vous rappelerai de vous étirer ici :ok_hand:");
       onSubscribe(newChannelId);
     }
   },
