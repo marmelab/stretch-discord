@@ -9,13 +9,16 @@ start:
 	npm start
 
 start-server:
-	ssh discord-bot 'cd ~/stretch-discord; $(PM2) start src/index.js --name stretch-bot'
+	ssh discord-bot 'cd ~/stretch-discord; $(PM2) start src/index.js --name stretch-bot --node-args="--experimental-json-modules"'
 
 stop-server:
 	ssh discord-bot 'cd ~/stretch-discord; $(PM2) stop stretch-bot'
 
 reload-server:
 	$(PM2) reload stretch-bot
+
+logs-server:
+	ssh discord-bot 'cd ~/stretch-discord; $(PM2) logs stretch-bot'
 
 deploy:
 	git archive -o bot.zip HEAD
