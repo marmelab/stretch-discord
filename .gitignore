@@ -105,3 +105,6 @@ dist
 
 # Env file
 .env
+
+# Store channels file
+channels_ids

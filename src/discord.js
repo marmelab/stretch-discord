@@ -1,26 +1,42 @@
 import Discord from "discord.js";
-const client = new Discord.Client();
+import fs from "fs";
 
-const on = (action) =>
+const discordClient = new Discord.Client();
+
+const onReady = () =>
   new Promise((resolve) => {
-    client.on(action, (res) => resolve(res));
+    discordClient.on("ready", (res) => resolve(res));
   });
 
 const actionsFactory = (client) => ({
   getChannel: (channelId) => client.channels.fetch(channelId),
-  waitMessage: async () => {
-    const message = await client.on("message");
-    console.log(message);
-    if (message.content === "ping") {
-      message.channel.send("pong");
-    }
+  subscribeListener: (onSubscribe) => {
+    client.on("message", async (message) => {
+      if (message.content === "!stretch") {
+        const newChannelId = message.channel.id;
+
+        const channelsRaw = await fs.readFileSync("./channels_ids", {
+          encoding: "utf8",
+        });
+        const channelsIds = channelsRaw.split(",");
+        if (channelsIds.includes(newChannelId)) {
+          console.log("Already Stretching !");
+        } else {
+          const newChannelsIds = [...channelsIds, newChannelId].filter(
+            (chanId) => chanId.length > 0
+          );
+          fs.writeFileSync("./channels_ids", newChannelsIds.join(","));
+          onSubscribe(newChannelId);
+        }
+      }
+    });
   },
 });
 
 export default {
   init: (token) => {
-    client.login(token);
-    return { ...client, on };
+    discordClient.login(token);
+    return { client: discordClient, onReady };
   },
   actionsFactory,
 };
