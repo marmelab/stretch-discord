@@ -7,6 +7,13 @@ import fs from "fs";
 
 dotenv.config();
 
+const stretchings = stretching.stretching;
+
+const getRandomStretch = () => {
+  const index = Math.floor(Math.random() * Math.floor(stretchings.length));
+  return stretchings[index];
+};
+
 const connect = async () => {
   const { client, onReady } = discord.init(process.env.TOKEN);
   await onReady();
@@ -16,11 +23,15 @@ const connect = async () => {
 };
 
 const sendStretchReminder = (channels) => () => {
-  const { title, image, url, body } = stretching.stretching[0];
+  const { title, image, url, body } = getRandomStretch();
+  const formatedBody = body.map((value, index) => ({
+    name: `Étape ${index + 1}`,
+    value,
+  }));
   const message = new Discord.MessageEmbed()
     .setTitle(title)
     .setImage(image)
-    .addFields(...body)
+    .addFields(...formatedBody)
     .setURL(url);
 
   channels.forEach((channel) =>
