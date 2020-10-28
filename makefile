@@ -7,10 +7,10 @@ start:
 	npm start
 
 start-server:
-	$(PM2) start src/index.js --name stretch-bot
+	ssh discord-bot 'cd ~/stretch-discord; $(PM2) start src/index.js --name stretch-bot'
 
 stop-server:
-	$(PM2) stop stretch-bot
+	ssh discord-bot 'cd ~/stretch-discord; $(PM2) stop stretch-bot'
 
 reload-server:
 	$(PM2) reload stretch-bot
