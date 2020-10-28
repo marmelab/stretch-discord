@@ -1,4 +1,6 @@
 import discord from "./discord.js";
+import Discord from "discord.js";
+import stretching from "./stretching.json";
 import dotenv from "dotenv";
 import cron from "node-cron";
 import fs from "fs";
@@ -14,17 +16,30 @@ const connect = async () => {
 };
 
 const sendStretchReminder = (channels) => () => {
-  const message = `Étire toi !`;
-  channels.forEach((channel) => channel.send(message));
+  const { title, image, url, body } = stretching.stretching[0];
+  const message = new Discord.MessageEmbed()
+    .setTitle(title)
+    .setImage(image)
+    .addFields(...body)
+    .setURL(url);
+
+  channels.forEach((channel) =>
+    channel.send({ embed: message, content: "C'est l'heure de l'étirement !" })
+  );
 };
 
-const run = async () => {
+const getStoredChannelsIds = async (filename = "./channels_ids") => {
   const channelsRaw = await fs.readFileSync("./channels_ids", {
     encoding: "utf8",
   });
   const channelsIds = channelsRaw
     .split(",")
     .filter((chanId) => chanId.length > 0);
+  return channelsIds;
+};
+
+const run = async () => {
+  const channelsIds = await getStoredChannelsIds();
   const client = await connect();
   const actions = discord.actionsFactory(client);
   const channels = await Promise.all(
