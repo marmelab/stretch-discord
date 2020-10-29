@@ -33,9 +33,13 @@ const run = async () => {
   const client = await connect();
   const actions = actionsFactory(client);
 
-  const channels = await Promise.all(
-    channelsIds.map((id) => actions.getChannel(id))
-  );
+  const channels = channelsIds.map(async (id) => {
+    try {
+      await actions.getChannel(id);
+    } catch (e) {
+      console.error(e);
+    }
+  });
 
   // message listening
   actions.subscribeListener(async (channelId) => {
