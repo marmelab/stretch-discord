@@ -32,7 +32,7 @@ export const actionsFactory = (client) => {
   const getChannel = (channelId) => client.channels.fetch(channelId);
   const getChannels = async () => {
     const channelsIds = await getStoredChannelsIds();
-    return await Promise.all(
+    const channels = await Promise.all(
       channelsIds.map(async (id) => {
         try {
           return await getChannel(id);
@@ -41,6 +41,7 @@ export const actionsFactory = (client) => {
         }
       })
     );
+    return channels.filter((channel) => !!channel);
   };
   const listen = () => {
     client.on("message", async (message) => {

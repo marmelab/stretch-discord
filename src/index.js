@@ -16,7 +16,7 @@ const run = async () => {
   const client = await connect();
   const actions = actionsFactory(client);
   actions.listen();
-  cron.schedule("*/10 * * * * *", actions.sendStretchReminder);
+  cron.schedule(process.env.CRON_CONFIG, actions.sendStretchReminder);
 };
 
 run();
