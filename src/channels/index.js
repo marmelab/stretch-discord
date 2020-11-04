@@ -17,7 +17,9 @@ const writeChannelsIds = (channelsIds, filename = DEFAULT_FILENAME) =>
 
 export const addChannel = async (channelId, filename = DEFAULT_FILENAME) => {
   const channelsIds = await getStoredChannelsIds(filename);
-
+  if (channelsIds.includes(channelId)) {
+    return Promise.resolve();
+  }
   const newChannelsIds = [...channelsIds, channelId].filter(
     (chanId) => chanId.length > 0
   );
