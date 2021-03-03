@@ -1,5 +1,6 @@
 import cron from "node-cron";
 import dotenv from "dotenv";
+
 dotenv.config();
 
 import { init, onReady, actionsFactory } from "./discord.js";

@@ -4,7 +4,7 @@ const DEFAULT_FILENAME = `${path.resolve()}/channels_ids`;
 const DEFAULT_SUDOKU_FILENAME = `${path.resolve()}/sudoku_data`;
 
 export const getStoredChannelsIds = async (filename = DEFAULT_FILENAME) => {
-  const channelsRaw = await fs.readFileSync(filename, {
+  const channelsRaw = fs.readFileSync(filename, {
     encoding: "utf8",
   });
   const channelsIds = channelsRaw
@@ -38,7 +38,14 @@ export const addSudokuToChannel = async (
   sudoku,
   filename = DEFAULT_SUDOKU_FILENAME
 ) => {
-  const data = await fs.readFileSync(filename, { encoding: "utf-8" });
+  let data = "";
+  try {
+    data = fs.readFileSync(filename, { encoding: "utf-8" });
+  } catch (e) {
+    if (e.code) {
+      fs.writeFileSync(filename, data, { flag: "wx" });
+    }
+  }
   const sanitizedData = data
     .split(";")
     .filter((dataChannel) => {
@@ -48,7 +55,7 @@ export const addSudokuToChannel = async (
     .join(";");
   fs.writeFileSync(
     filename,
-    `${sanitizedData};${channelId}:${JSON.stringify(sudoku)}`
+    `${sanitizedData};${channelId}::${JSON.stringify(sudoku)}`
   );
 };
 
@@ -56,10 +63,10 @@ export const getChannelSudoku = async (
   targetChannelId,
   filename = DEFAULT_SUDOKU_FILENAME
 ) => {
-  const data = await fs.readFileSync(filename, { encoding: "utf-8" });
+  const data = fs.readFileSync(filename, { encoding: "utf-8" });
   const channelData = data.split(";").find((channelData) => {
     const [channelId] = channelData.split(":");
     return channelId === targetChannelId;
   });
-  return channelData ? JSON.parse(channelData.split(":")[1]) : null;
+  return channelData ? JSON.parse(channelData.split("::")[1]) : null;
 };

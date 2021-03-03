@@ -10,4 +10,6 @@ export default {
   Sudoku: Sudoku.subscribe,
   Play: Sudoku.play,
   View: Sudoku.view,
+  Guess: Sudoku.guess,
+  Blame: Sudoku.blame,
 };
