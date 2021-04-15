@@ -2,6 +2,19 @@ import * as sudoku from "sudoku";
 
 export const getNewPuzzle = () => {
   const puzzle = sudoku.makepuzzle();
+  const resolved = sudoku.default
+    .solvepuzzle(puzzle)
+    .reduce((grid, value, index) => {
+      const row = Math.floor(index / 9);
+      if (grid[row] === undefined) {
+        grid[row] = [];
+      }
+      grid[row][index % 9] = {
+        value: value !== null ? value + 1 : null,
+        initial: value !== null,
+      };
+      return grid;
+    }, []);
   return puzzle.reduce((grid, value, index) => {
     const row = Math.floor(index / 9);
     if (grid[row] === undefined) {
@@ -66,7 +79,7 @@ export const play = ({
   });
 };
 
-export const isPuzzleWinning = (puzzle = test) => {
+export const isPuzzleWinning = (puzzle) => {
   const hasEmptyCell = puzzle.some((rows) =>
     rows.some((cell) => cell.value === null)
   );
@@ -102,4 +115,15 @@ export const isPuzzleWinning = (puzzle = test) => {
       return expectedValues.every((value) => subPart.includes(value));
     });
   });
+};
+
+export const getPuzzleLeaderboard = (puzzle) => {
+  return puzzle.flat().reduce((leaderboard, cell) => {
+    if (cell.author === undefined) {
+      return leaderboard;
+    }
+    const score = leaderboard[cell.author] ?? 0;
+
+    return { ...leaderboard, [cell.author]: score + 1 };
+  }, {});
 };

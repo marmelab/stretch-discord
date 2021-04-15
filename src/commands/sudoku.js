@@ -71,10 +71,18 @@ export const play = {
       await addSudokuToChannel(message.channel.id, newPuzzle);
       const attachment = await getSudokuImage(newPuzzle);
       if (Sudoku.isPuzzleWinning(newPuzzle)) {
-        return message.channel.send(
+        await message.channel.send(
           "Vous avez gagné ! Champions :partying_face:",
           attachment
         );
+        const leaderboard = Sudoku.getPuzzleLeaderboard(puzzle);
+        const leaderboardMessage = Object.entries(leaderboard).reduce(
+          (msg, [author, value]) => {
+            return `${msg}${author}: ${value}\n`;
+          },
+          ""
+        );
+        return message.channel.send(`Leaderboard:\n${leaderboardMessage}`);
       }
       message.channel.send(":ok_hand:", attachment);
     } catch (e) {
@@ -150,6 +158,30 @@ export const blame = {
     try {
       const author = Sudoku.blame(puzzle, row, col);
       message.channel.send(`Le coupable est ${author} :scream:`);
+    } catch (e) {
+      console.error(e);
+      message.channel.send(e.message);
+    }
+  },
+};
+
+export const leaderboard = {
+  name: "leaderboard",
+  description: "Get the leaderboard of a puzzle",
+  async execute(message) {
+    const puzzle = await getChannelSudoku(message.channel.id);
+    if (!puzzle) {
+      return message.channel.send("Vous ne jouez pas au Sudoku :(");
+    }
+    try {
+      const leaderboard = Sudoku.getPuzzleLeaderboard(puzzle);
+      const leaderboardMessage = Object.entries(leaderboard).reduce(
+        (msg, [author, value]) => {
+          return `${msg}${author}: ${value}\n`;
+        },
+        ""
+      );
+      message.channel.send(`Leaderboard:\n${leaderboardMessage}`);
     } catch (e) {
       console.error(e);
       message.channel.send(e.message);

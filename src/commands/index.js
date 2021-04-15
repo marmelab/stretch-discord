@@ -12,4 +12,5 @@ export default {
   View: Sudoku.view,
   Guess: Sudoku.guess,
   Blame: Sudoku.blame,
+  Leaderboard: Sudoku.leaderboard,
 };
