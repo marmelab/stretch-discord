@@ -41,7 +41,7 @@ export const play = ({
   isGuess = false,
   author,
 }) => {
-  if (newValue < 1 || newValue > 9) {
+  if (newValue < 1 || newValue > 9 || isNaN(parseInt(newValue))) {
     throw new Error("Invalid value");
   }
   const [col, row] = getCoordinates(colChar, rowChar);
