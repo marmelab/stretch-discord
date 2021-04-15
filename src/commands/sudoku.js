@@ -107,7 +107,14 @@ export const guess = {
       return message.channel.send("Vous ne jouez pas au Sudoku :(");
     }
     try {
-      const newPuzzle = Sudoku.play(puzzle, row, col, value, true);
+      const newPuzzle = Sudoku.play({
+        puzzle,
+        rowChar: row,
+        colChar: col,
+        newValue: value,
+        isGuess: true,
+        author: message.author.username,
+      });
       await addSudokuToChannel(message.channel.id, newPuzzle);
       const attachment = await getSudokuImage(newPuzzle);
       message.channel.send(":ok_hand:", attachment);
