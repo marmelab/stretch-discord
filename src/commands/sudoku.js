@@ -22,6 +22,11 @@ const getSudokuImage = async (puzzle) => {
   return attachment;
 };
 
+const getCoords = (args) => {
+  const [col, row, value] = args.join("").split("");
+  return { col, row, value };
+};
+
 export const subscribe = {
   name: "sudoku",
   description: "Play a new game of sudoku",
@@ -50,7 +55,7 @@ export const play = {
   name: "play",
   description: "Make a move in existing sudoku game",
   async execute(message, args) {
-    const [row, col, value] = args;
+    const { row, col, value } = getCoords(args);
     if (row === undefined || col === undefined || value === undefined) {
       return message.channel.send(
         "Le format pour jouer est : `[Colonne] [Ligne] [Valeur]`"
@@ -104,7 +109,7 @@ export const guess = {
   name: "guess",
   description: "Make a guess in sudoku",
   async execute(message, args) {
-    const [row, col, value] = args;
+    const { row, col, value } = getCoords(args);
     if (row === undefined || col === undefined || value === undefined) {
       return message.channel.send(
         "Le format pour jouer est : `[Colonne] [Ligne] [Valeur]`"
@@ -145,7 +150,7 @@ export const blame = {
   name: "blame",
   description: "Blame a sudoku play",
   async execute(message, args) {
-    const [row, col] = args;
+    const { row, col } = getCoords(args);
     if (row === undefined || col === undefined) {
       return message.channel.send(
         "Le format pour blame est : `[Colonne] [Ligne]`"
@@ -156,7 +161,7 @@ export const blame = {
       return message.channel.send("Vous ne jouez pas au Sudoku :(");
     }
     try {
-      const author = Sudoku.blame(puzzle, row, col);
+      const author = Sudoku.blame({ puzzle, rowChar: row, colChar: col });
       message.channel.send(`Le coupable est ${author} :scream:`);
     } catch (e) {
       console.error(e);

@@ -2,19 +2,6 @@ import * as sudoku from "sudoku";
 
 export const getNewPuzzle = () => {
   const puzzle = sudoku.makepuzzle();
-  const resolved = sudoku.default
-    .solvepuzzle(puzzle)
-    .reduce((grid, value, index) => {
-      const row = Math.floor(index / 9);
-      if (grid[row] === undefined) {
-        grid[row] = [];
-      }
-      grid[row][index % 9] = {
-        value: value !== null ? value + 1 : null,
-        initial: value !== null,
-      };
-      return grid;
-    }, []);
   return puzzle.reduce((grid, value, index) => {
     const row = Math.floor(index / 9);
     if (grid[row] === undefined) {
@@ -28,18 +15,18 @@ export const getNewPuzzle = () => {
   }, []);
 };
 
-const getCoordinates = (rowChar, colChar) => {
-  const row = rowChar.toUpperCase().charCodeAt(0) - 64 - 1;
-  const col = parseInt(colChar) - 1;
+const getCoordinates = (colChar, rowChar) => {
+  const col = colChar.toUpperCase().charCodeAt(0) - 64 - 1;
+  const row = parseInt(rowChar) - 1;
   if (row < 0 || row > 8 || col < 0 || col > 8 || isNaN(col) || isNaN(row)) {
     throw new Error("Invalid position");
   }
-  return [row, col];
+  return [col, row];
 };
 
-export const blame = (puzzle, rowChar, colChar) => {
-  const [row, col] = getCoordinates(rowChar, colChar);
-  const author = puzzle[col][row].author;
+export const blame = ({ puzzle, colChar, rowChar }) => {
+  const [col, row] = getCoordinates(colChar, rowChar);
+  const author = puzzle[row][col].author;
   if (author === undefined) {
     throw new Error("Personne n'a joué sur cette case !");
   }
@@ -57,10 +44,10 @@ export const play = ({
   if (newValue < 1 || newValue > 9) {
     throw new Error("Invalid value");
   }
-  const [row, col] = getCoordinates(rowChar, colChar);
-  return puzzle.map((_, indexCol) => {
-    return _.map((cell, indexRow) => {
-      if (indexRow === row && indexCol === col) {
+  const [col, row] = getCoordinates(colChar, rowChar);
+  return puzzle.map((_, indexRow) => {
+    return _.map((cell, indexCol) => {
+      if (indexCol === col && indexRow === row) {
         if (cell.initial === true) {
           throw new Error("Initial value");
         }
