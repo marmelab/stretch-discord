@@ -23,7 +23,7 @@ start-server:
 	ssh discord-bot 'cd ~/stretch-discord; make start'
 
 stop-server:
-	ssh discord-bot 'cd ~/stretch-discord; make-stop'
+	ssh discord-bot 'cd ~/stretch-discord; make stop'
 
 logs-server:
 	ssh discord-bot 'cd ~/stretch-discord; make logs'
