@@ -1,6 +1,6 @@
-PM2=node_modules/.bin/pm2
-DOCKER=docker run -it --rm discord-bot
-DOCKER_SERVER=docker run discord-bot
+PM2=node_modules/pm2/bin/pm2
+DOCKER=docker run -it --rm --privileged discord-bot
+DOCKER_SERVER=docker run --privileged discord-bot
 
 install:
 	touch channels_ids
