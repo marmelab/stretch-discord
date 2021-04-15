@@ -1,5 +1,6 @@
 PM2=node_modules/.bin/pm2
 DOCKER=docker run -it --rm discord-bot
+DOCKER_SERVER=docker run discord-bot
 
 install:
 	touch channels_ids
@@ -10,16 +11,16 @@ start:
 	$(DOCKER) npm run start
 
 start-server:
-	ssh discord-bot 'cd ~/stretch-discord; $(DOCKER) $(PM2) start src/index.js --name stretch-bot --node-args="--experimental-json-modules"'
+	ssh discord-bot 'cd ~/stretch-discord; $(DOCKER_SERVER) $(PM2) start src/index.js --name stretch-bot --node-args="--experimental-json-modules"'
 
 stop-server:
-	ssh discord-bot 'cd ~/stretch-discord; $(DOCKER) $(PM2) stop stretch-bot'
+	ssh discord-bot 'cd ~/stretch-discord; $(DOCKER_SERVER) $(PM2) stop stretch-bot'
 
 reload-server:
-	$(DOCKER) $(PM2) reload stretch-bot
+	$(DOCKER_SERVER) $(PM2) reload stretch-bot
 
 logs-server:
-	ssh discord-bot 'cd ~/stretch-discord; $(DOCKER) $(PM2) logs stretch-bot'
+	ssh discord-bot 'cd ~/stretch-discord; $(DOCKER_SERVER) $(PM2) logs stretch-bot'
 
 deploy:
 	git archive -o bot.zip HEAD
