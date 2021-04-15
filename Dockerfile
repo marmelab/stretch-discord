@@ -22,3 +22,5 @@ RUN chown -R botuser:botuser /srv
 USER botuser
 
 RUN npm install
+
+CMD npm run start

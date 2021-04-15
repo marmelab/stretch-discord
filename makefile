@@ -1,6 +1,4 @@
-PM2=node_modules/pm2/bin/pm2
-DOCKER=docker run -it --rm --privileged discord-bot
-DOCKER_SERVER=docker run --privileged discord-bot
+CONTAINER_NAME=discord-bot
 
 install:
 	touch channels_ids
@@ -8,19 +6,22 @@ install:
 	docker build -t discord-bot .
 
 start:
-	$(DOCKER) npm run start
+	docker run -it --rm --privileged discord-bot
+
+start-detached:
+	docker run -d --privileged --name $(CONTAINER_NAME) discord-bot
 
 start-server:
-	ssh discord-bot 'cd ~/stretch-discord; $(DOCKER_SERVER) $(PM2) start src/index.js --name stretch-bot --node-args="--experimental-json-modules"'
+	ssh discord-bot 'cd ~/stretch-discord; make start-detached'
 
 stop-server:
-	ssh discord-bot 'cd ~/stretch-discord; $(DOCKER_SERVER) $(PM2) stop stretch-bot'
-
-reload-server:
-	$(DOCKER_SERVER) $(PM2) reload stretch-bot
+	ssh discord-bot '\
+		cd ~/stretch-discord; \
+		docker stop $(CONTAINER_NAME); \
+		docker rm $(CONTAINER_NAME)'
 
 logs-server:
-	ssh discord-bot 'cd ~/stretch-discord; $(DOCKER_SERVER) $(PM2) logs stretch-bot'
+	ssh discord-bot 'cd ~/stretch-discord; docker logs $(CONTAINER_NAME)'
 
 deploy:
 	git archive -o bot.zip HEAD
@@ -30,5 +31,5 @@ deploy:
 		unzip -uo ~/bot.zip -d ~/stretch-discord; \
 		rm -f bot.zip; \
 		cd ~/stretch-discord; \
-		make install && make reload-server; \
+		make install && make start-detached; \
 	'

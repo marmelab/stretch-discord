@@ -28,7 +28,6 @@
     "dotenv": "^8.2.0",
     "node-cron": "^2.0.3",
     "node-html-to-image": "3.1.0",
-    "pm2": "^4.5.0",
     "sudoku": "^0.0.3"
   },
   "type": "module"
