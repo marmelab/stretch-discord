@@ -11,17 +11,19 @@ start:
 start-detached:
 	docker run -d --privileged --name $(CONTAINER_NAME) discord-bot
 
+stop-detached:
+	docker rm -f $(CONTAINER_NAME) || true
+
 start-server:
 	ssh discord-bot 'cd ~/stretch-discord; make start-detached'
 
 stop-server:
 	ssh discord-bot '\
 		cd ~/stretch-discord; \
-		docker stop $(CONTAINER_NAME); \
-		docker rm $(CONTAINER_NAME)'
+		docker rm -f$(CONTAINER_NAME)'
 
 logs-server:
-	ssh discord-bot 'cd ~/stretch-discord; docker logs $(CONTAINER_NAME)'
+	ssh discord-bot 'cd ~/stretch-discord; docker logs $(CONTAINER_NAME) -f'
 
 deploy:
 	git archive -o bot.zip HEAD
@@ -31,5 +33,5 @@ deploy:
 		unzip -uo ~/bot.zip -d ~/stretch-discord; \
 		rm -f bot.zip; \
 		cd ~/stretch-discord; \
-		make install && make start-detached; \
+		make stop-detached && make install && make start-detached; \
 	'
