@@ -42,7 +42,7 @@ export const view = {
       return message.channel.send("Vous ne jouez pas au Sudoku :frowning:");
     }
     const attachment = await getSudokuImage(puzzle);
-    message.channel.send("Here is your sudoku grid :wink:", attachment);
+    message.channel.send("Voilà la grille :wink:", attachment);
   },
 };
 

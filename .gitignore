@@ -106,9 +106,6 @@ dist
 # Env file
 .env
 
-# Store channels file
-channels_ids
-
+# Data files
+data/
 stretching.json
-
-sudoku_data

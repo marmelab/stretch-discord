@@ -1,29 +1,32 @@
 CONTAINER_NAME=discord-bot
 
 install:
-	touch channels_ids
+	mkdir -p data
+	touch data/channels_ids
+	touch data/sudoku_data
 	cp -n .env.dist .env
-	docker build -t discord-bot .
+	docker-compose build
 
 start:
-	docker run -it --rm --privileged discord-bot
+	docker-compose up -d
 
-start-detached:
-	docker run -d --privileged --name $(CONTAINER_NAME) discord-bot
+stop:
+	docker-compose down
 
-stop-detached:
-	docker rm -f $(CONTAINER_NAME) || true
+restart:
+	docker-compose restart
+
+logs:
+	docker-compose logs -f
 
 start-server:
-	ssh discord-bot 'cd ~/stretch-discord; make start-detached'
+	ssh discord-bot 'cd ~/stretch-discord; make start'
 
 stop-server:
-	ssh discord-bot '\
-		cd ~/stretch-discord; \
-		docker rm -f$(CONTAINER_NAME)'
+	ssh discord-bot 'cd ~/stretch-discord; make-stop'
 
 logs-server:
-	ssh discord-bot 'cd ~/stretch-discord; docker logs $(CONTAINER_NAME) -f'
+	ssh discord-bot 'cd ~/stretch-discord; make logs'
 
 deploy:
 	git archive -o bot.zip HEAD
@@ -33,5 +36,5 @@ deploy:
 		unzip -uo ~/bot.zip -d ~/stretch-discord; \
 		rm -f bot.zip; \
 		cd ~/stretch-discord; \
-		make stop-detached && make install && make start-detached; \
+		make stop && make install && make start; \
 	'

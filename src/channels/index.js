@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
-const DEFAULT_FILENAME = `${path.resolve()}/channels_ids`;
-const DEFAULT_SUDOKU_FILENAME = `${path.resolve()}/sudoku_data`;
+const DEFAULT_FILENAME = `${path.resolve()}/data/channels_ids`;
+const DEFAULT_SUDOKU_FILENAME = `${path.resolve()}/data/sudoku_data`;
 
 export const getStoredChannelsIds = async (filename = DEFAULT_FILENAME) => {
   const channelsRaw = fs.readFileSync(filename, {
