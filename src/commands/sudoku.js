@@ -31,6 +31,25 @@ export const subscribe = {
   name: "sudoku",
   description: "Play a new game of sudoku",
   async execute(message) {
+    const puzzle = await getChannelSudoku(message.channel.id);
+    if (puzzle && !Sudoku.isPuzzleWinning(puzzle)) {
+      const attachment = await getSudokuImage(puzzle);
+      return message.channel.send(
+        "Vous avez déjà une partie en cours (!sudoku_force si vous voulez abandonner):",
+        attachment
+      );
+    }
+    const newPuzzle = Sudoku.getNewPuzzle();
+    await addSudokuToChannel(message.channel.id, newPuzzle);
+    const attachment = await getSudokuImage(newPuzzle);
+    message.channel.send("Let's go :smile:", attachment);
+  },
+};
+
+export const subscribeForce = {
+  name: "sudoku_force",
+  description: "Force a new game of sudoku",
+  async execute(message) {
     const puzzle = Sudoku.getNewPuzzle();
     await addSudokuToChannel(message.channel.id, puzzle);
     const attachment = await getSudokuImage(puzzle);

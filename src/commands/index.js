@@ -13,4 +13,5 @@ export default {
   Guess: Sudoku.guess,
   Blame: Sudoku.blame,
   Leaderboard: Sudoku.leaderboard,
+  SubscribeForce: Sudoku.subscribeForce,
 };
