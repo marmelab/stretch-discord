@@ -99,7 +99,7 @@ export const play = {
           "Vous avez gagné ! Champions :partying_face:",
           attachment
         );
-        const leaderboard = Sudoku.getPuzzleLeaderboard(puzzle);
+        const leaderboard = Sudoku.getPuzzleLeaderboard(newPuzzle);
         const leaderboardMessage = Object.entries(leaderboard).reduce(
           (msg, [author, value]) => {
             return `${msg}${author}: ${value}\n`;
