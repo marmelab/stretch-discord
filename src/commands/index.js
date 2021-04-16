@@ -14,4 +14,5 @@ export default {
   Blame: Sudoku.blame,
   Leaderboard: Sudoku.leaderboard,
   SubscribeForce: Sudoku.subscribeForce,
+  Erase: Sudoku.erase,
 };
