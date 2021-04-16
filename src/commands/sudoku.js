@@ -27,10 +27,48 @@ const getCoords = (args) => {
   return { col, row, value };
 };
 
+const getHelp = (args) => {
+  const [help, command] = args;
+  if (help !== "help") {
+    return `To obtain help, type
+!sudoku help [command]`;
+  }
+
+  const list = {
+    sudoku: "- **!sudoku** : Start a new game",
+    play: "- **!play C3 5** : Play the number 5 in C3",
+    guess:
+      "- **!guess B3 4** : Guess that number in B3 is4 (will be displayed with **?**)",
+    erase: "- **!erase A1** : Erase the position A1",
+    view: "- **!view** : Show the current grid",
+    blame:
+      "- **!blame I3** : Show the name of the player who filled the postion I3",
+    leaderboard: "- **!leaderboard** : Show the scores for current game",
+    blame:
+      "- **!blame I3** : Display the name of the player who filled the postion I3",
+    totaldoubt:
+      "- **!totaldoubt** : Convert all existing numbers in the grid to guesses",
+    cleanguess: "- **!cleanguess** : Erase all guesses in the grid",
+  };
+
+  return `**SUDOKU GUIDE**
+${
+  command === undefined
+    ? Object.values(list).join("\n")
+    : list[command]
+    ? list[command]
+    : `The command **${command}** does not exists`
+}`;
+};
+
 export const subscribe = {
   name: "sudoku",
   description: "Play a new game of sudoku",
-  async execute(message) {
+  async execute(message, args) {
+    if (args.length) {
+      message.channel.send(getHelp(args));
+      return;
+    }
     const puzzle = await getChannelSudoku(message.channel.id);
     if (puzzle && !Sudoku.isPuzzleWinning(puzzle)) {
       const attachment = await getSudokuImage(puzzle);
