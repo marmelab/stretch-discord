@@ -16,7 +16,7 @@ const getSudokuImage = async (puzzle) => {
     });
     const buffer = await HtmlToImage({
         html,
-        content: { rows: puzzle },
+        content: { rows: Sudoku.showInvalidNumbers(puzzle) },
     });
     const attachment = new MessageAttachment(buffer, "sudoku.png");
     return attachment;
