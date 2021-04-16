@@ -204,6 +204,52 @@ export const erase = {
   },
 };
 
+export const totalDoubt = {
+  name: "totaldoubt",
+  description: "Transform all played position in guess",
+  async execute(message, args) {
+    const puzzle = await getChannelSudoku(message.channel.id);
+    if (!puzzle) {
+      return message.channel.send("Vous ne jouez pas au Sudoku :(");
+    }
+    try {
+      const newPuzzle = Sudoku.totalDoubt({
+        puzzle,
+        author: message.author.username,
+      });
+      await addSudokuToChannel(message.channel.id, newPuzzle);
+      const attachment = await getSudokuImage(newPuzzle);
+      message.channel.send(":thinking:", attachment);
+    } catch (e) {
+      console.error(e);
+      message.channel.send(e.message);
+    }
+  },
+};
+
+export const cleanAllGuess = {
+  name: "cleanguess",
+  description: "Erase all guess positions",
+  async execute(message, args) {
+    const puzzle = await getChannelSudoku(message.channel.id);
+    if (!puzzle) {
+      return message.channel.send("Vous ne jouez pas au Sudoku :(");
+    }
+    try {
+      const newPuzzle = Sudoku.cleanAllGuess({
+        puzzle,
+        author: message.author.username,
+      });
+      await addSudokuToChannel(message.channel.id, newPuzzle);
+      const attachment = await getSudokuImage(newPuzzle);
+      message.channel.send(":sob:", attachment);
+    } catch (e) {
+      console.error(e);
+      message.channel.send(e.message);
+    }
+  },
+};
+
 export const blame = {
   name: "blame",
   description: "Blame a sudoku play",

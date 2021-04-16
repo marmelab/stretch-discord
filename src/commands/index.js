@@ -15,4 +15,6 @@ export default {
   Leaderboard: Sudoku.leaderboard,
   SubscribeForce: Sudoku.subscribeForce,
   Erase: Sudoku.erase,
+  CleanGuess: Sudoku.cleanAllGuess,
+  TotalDoubt: Sudoku.totalDoubt,
 };

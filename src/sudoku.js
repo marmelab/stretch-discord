@@ -89,6 +89,38 @@ export const erase = ({ puzzle, colChar, rowChar, author }) => {
   });
 };
 
+export const totalDoubt = ({ puzzle, author }) => {
+  return puzzle.map((_) => {
+    return _.map((cell) => {
+      if (cell.initial === true) {
+        return cell;
+      }
+      return {
+        value: cell.value,
+        lastPlayed: cell.value ? true : false,
+        guess: cell.value ? true : false,
+        author,
+      };
+    });
+  });
+};
+
+export const cleanAllGuess = ({ puzzle, author }) => {
+  return puzzle.map((_) => {
+    return _.map((cell) => {
+      if (cell.initial === true) {
+        return cell;
+      }
+      return {
+        value: cell.guess ? null : cell.value,
+        lastPlayed: cell.guess ? true : false,
+        guess: false,
+        author,
+      };
+    });
+  });
+};
+
 export const isPuzzleWinning = (puzzle) => {
   const hasEmptyCell = puzzle.some((rows) =>
     rows.some((cell) => cell.value === null)
