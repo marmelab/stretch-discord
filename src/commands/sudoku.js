@@ -77,7 +77,7 @@ export const play = {
     const { row, col, value } = getCoords(args);
     if (row === undefined || col === undefined || value === undefined) {
       return message.channel.send(
-        "Le format pour jouer est : `[Colonne] [Ligne] [Valeur]`"
+        "Le format pour jouer est : `[Colonne][Ligne] [Valeur]`"
       );
     }
     const puzzle = await getChannelSudoku(message.channel.id);
@@ -113,7 +113,7 @@ export const play = {
       console.error(e);
       if (e.message === "Invalid position" || e.message === "Invalid value") {
         return message.channel.send(
-          `${e.message} :frowning:\n Le format pour jouer est : \`[Colonne][Ligne][Valeur]\``
+          `${e.message} :frowning:\n Le format pour jouer est : \`[Colonne][Ligne] [Valeur]\``
         );
       }
       if (e.message === "Initial value") {
@@ -131,7 +131,7 @@ export const guess = {
     const { row, col, value } = getCoords(args);
     if (row === undefined || col === undefined || value === undefined) {
       return message.channel.send(
-        "Le format pour jouer est : `[Colonne] [Ligne] [Valeur]`"
+        "Le format pour jouer est : `[Colonne][Ligne] [Valeur]`"
       );
     }
     const puzzle = await getChannelSudoku(message.channel.id);
@@ -154,11 +154,50 @@ export const guess = {
       console.error(e);
       if (e.message === "Invalid position" || e.message === "Invalid value") {
         return message.channel.send(
-          `${e.message} :frowning:\n Le format pour jouer est : \`[Colonne][Ligne][Valeur]\``
+          `${e.message} :frowning:\n Le format pour jouer est : \`[Colonne][Ligne] [Valeur]\``
         );
       }
       if (e.message === "Initial value") {
         return message.channel.send("Tu ne peux pas écrire dans cette case");
+      }
+      message.channel.send(e.message);
+    }
+  },
+};
+
+export const erase = {
+  name: "erase",
+  description: "Erase a position in existing sudoku game",
+  async execute(message, args) {
+    const { row, col } = getCoords(args);
+    if (row === undefined || col === undefined) {
+      return message.channel.send(
+        "Le format pour jouer est : `[Colonne][Ligne]`"
+      );
+    }
+    const puzzle = await getChannelSudoku(message.channel.id);
+    if (!puzzle) {
+      return message.channel.send("Vous ne jouez pas au Sudoku :(");
+    }
+    try {
+      const newPuzzle = Sudoku.erase({
+        puzzle,
+        rowChar: row,
+        colChar: col,
+        author: message.author.username,
+      });
+      await addSudokuToChannel(message.channel.id, newPuzzle);
+      const attachment = await getSudokuImage(newPuzzle);
+      message.channel.send(":ok_hand:", attachment);
+    } catch (e) {
+      console.error(e);
+      if (e.message === "Invalid position") {
+        return message.channel.send(
+          `${e.message} :frowning:\n Le format pour jouer est : \`[Colonne][Ligne]\``
+        );
+      }
+      if (e.message === "Initial value") {
+        return message.channel.send("Tu ne peux pas effacer cette case");
       }
       message.channel.send(e.message);
     }
@@ -172,7 +211,7 @@ export const blame = {
     const { row, col } = getCoords(args);
     if (row === undefined || col === undefined) {
       return message.channel.send(
-        "Le format pour blame est : `[Colonne] [Ligne]`"
+        "Le format pour blame est : `[Colonne][Ligne]`"
       );
     }
     const puzzle = await getChannelSudoku(message.channel.id);

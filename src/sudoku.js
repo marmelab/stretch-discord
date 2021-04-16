@@ -66,6 +66,29 @@ export const play = ({
   });
 };
 
+export const erase = ({ puzzle, colChar, rowChar, author }) => {
+  const [col, row] = getCoordinates(colChar, rowChar);
+  return puzzle.map((_, indexRow) => {
+    return _.map((cell, indexCol) => {
+      if (indexCol === col && indexRow === row) {
+        if (cell.initial === true) {
+          throw new Error("Initial value");
+        }
+        return {
+          value: null,
+          lastPlayed: true,
+          guess: false,
+          author,
+        };
+      }
+      return {
+        ...cell,
+        lastPlayed: false,
+      };
+    });
+  });
+};
+
 export const isPuzzleWinning = (puzzle) => {
   const hasEmptyCell = puzzle.some((rows) =>
     rows.some((cell) => cell.value === null)
