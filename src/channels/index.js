@@ -1,5 +1,6 @@
 import path from "path";
 import fs from "fs";
+
 const DEFAULT_FILENAME = `${path.resolve()}/data/channels_ids`;
 const DEFAULT_SUDOKU_FILENAME = `${path.resolve()}/data/sudoku_data`;
 

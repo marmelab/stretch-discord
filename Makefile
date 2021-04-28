@@ -4,6 +4,7 @@ install:
 	mkdir -p data
 	touch data/channels_ids
 	touch data/sudoku_data
+	touch data/stackoverflow
 	cp -n .env.dist .env
 	docker-compose build
 
