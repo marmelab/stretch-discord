@@ -14,7 +14,7 @@ export const subscribe = {
         try {
             channelSubscribeToTag(args[0], channelId);
             message.channel.send(
-                `You are now subscribed to topics containg tag ${args[0]}`,
+                `You are now subscribed to topics containing tag ${args[0]}`,
             );
         } catch (e) {
             message.channel.send(e.message);
