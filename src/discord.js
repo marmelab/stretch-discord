@@ -2,6 +2,7 @@ import Discord from "discord.js";
 import stretching from "./stretching.json";
 import commands from "./commands/index.js";
 import { getStoredChannelsIds } from "./channels/index.js";
+import * as stackoverflow from "./channels/stackoverflow.js";
 
 const prefix = "!";
 const stretchings = stretching.stretching;
@@ -30,16 +31,17 @@ const getRandomStretch = () => {
 
 export const actionsFactory = (client) => {
     const getChannel = (channelId) => client.channels.fetch(channelId);
-    const getChannels = async () => {
-        const channelsIds = await getStoredChannelsIds();
+    const getChannels = async (channelsIds) => {
         const channels = await Promise.all(
-            channelsIds.map(async (id) => {
-                try {
-                    return await getChannel(id);
-                } catch (e) {
-                    console.error(e);
-                }
-            }),
+            channelsIds
+                .filter((id) => !!id)
+                .map((id) => {
+                    try {
+                        return getChannel(id);
+                    } catch (e) {
+                        console.error(e);
+                    }
+                }),
         );
         return channels.filter((channel) => !!channel);
     };
@@ -67,7 +69,8 @@ export const actionsFactory = (client) => {
         });
     };
     const sendStretchReminder = async () => {
-        const channels = await getChannels();
+        const channelsIds = await getStoredChannelsIds();
+        const channels = await getChannels(channelsIds);
         const { title, image, url, body } = getRandomStretch();
         const formatedBody = body.map((value, index) => ({
             name: `Étape ${index + 1}`,
@@ -86,5 +89,39 @@ export const actionsFactory = (client) => {
             }),
         );
     };
-    return { getChannel, getChannels, listen, sendStretchReminder };
+    const sendStackoverflowNewTopics = async () => {
+        const stackoverflowData = stackoverflow.getData();
+        stackoverflowData.forEach(async (data) => {
+            console.log(data);
+            const newTimestamp = Math.floor(new Date().getTime() / 1000);
+            const topics = await stackoverflow.fetchNewTopics(
+                data.tag,
+                data.timestamp,
+            );
+            if (Array.isArray(topics) && topics.length > 0) {
+                const channel = await getChannel(data.channelId);
+                topics.forEach(async (topic) => {
+                    const message = new Discord.MessageEmbed()
+                        .setTitle(topic.title)
+                        .setURL(topic.link)
+                        .addField("View count", topic.view_count)
+                        .addField("Answer count", topic.answer_count);
+                    await channel.send({
+                        embed: message,
+                        content: `New issue about ${data.tag}`,
+                    });
+                });
+            } else {
+                console.log(`No results for tag ${data.tag}`);
+            }
+            stackoverflow.updateTimestamp(data, newTimestamp);
+        });
+    };
+    return {
+        getChannel,
+        getChannels,
+        listen,
+        sendStretchReminder,
+        sendStackoverflowNewTopics,
+    };
 };

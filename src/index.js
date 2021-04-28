@@ -17,7 +17,11 @@ const run = async () => {
     const client = await connect();
     const actions = actionsFactory(client);
     actions.listen();
-    cron.schedule(process.env.CRON_CONFIG, actions.sendStretchReminder);
+    cron.schedule(process.env.CRON_CONFIG_STRETCH, actions.sendStretchReminder);
+    cron.schedule(
+        process.env.CRON_CONFIG_STACKOVERFLOW,
+        actions.sendStackoverflowNewTopics,
+    );
 };
 
 run();

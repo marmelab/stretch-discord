@@ -24,6 +24,7 @@
     },
     "homepage": "https://github.com/marmelab/stretch-discord#readme",
     "dependencies": {
+        "axios": "^0.21.1",
         "discord.js": "^12.4.1",
         "dotenv": "^8.2.0",
         "node-cron": "^2.0.3",

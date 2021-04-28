@@ -2,6 +2,7 @@ import ping from "./ping.js";
 import stretch from "./stretch.js";
 import unstretch from "./unstretch.js";
 import * as Sudoku from "./sudoku.js";
+import * as Stackoverflow from "./stackoverflow.js";
 
 export default {
     Ping: ping,
@@ -17,4 +18,6 @@ export default {
     Erase: Sudoku.erase,
     CleanGuess: Sudoku.cleanAllGuess,
     TotalDoubt: Sudoku.totalDoubt,
+    SubscribeStackoverflow: Stackoverflow.subscribe,
+    UnsubscribeStackoverflow: Stackoverflow.unsubscribe,
 };
