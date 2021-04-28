@@ -1,34 +1,35 @@
 {
-  "name": "stretch-discord",
-  "version": "1.0.0",
-  "description": "A bot that remind us to stretch every hour",
-  "main": "src/index.js",
-  "scripts": {
-    "start": "node --experimental-json-modules src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/marmelab/stretch-discord.git"
-  },
-  "keywords": [
-    "discord",
-    "bot",
-    "nodejs",
-    "stretching"
-  ],
-  "author": "Marmelab",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/marmelab/stretch-discord/issues"
-  },
-  "homepage": "https://github.com/marmelab/stretch-discord#readme",
-  "dependencies": {
-    "discord.js": "^12.4.1",
-    "dotenv": "^8.2.0",
-    "node-cron": "^2.0.3",
-    "node-html-to-image": "3.1.0",
-    "sudoku": "^0.0.3"
-  },
-  "type": "module"
+    "name": "stretch-discord",
+    "version": "1.0.0",
+    "description": "A bot that remind us to stretch every hour",
+    "main": "src/index.js",
+    "scripts": {
+        "start": "node --experimental-json-modules src/index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/marmelab/stretch-discord.git"
+    },
+    "keywords": [
+        "discord",
+        "bot",
+        "nodejs",
+        "stretching"
+    ],
+    "author": "Marmelab",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/marmelab/stretch-discord/issues"
+    },
+    "homepage": "https://github.com/marmelab/stretch-discord#readme",
+    "dependencies": {
+        "discord.js": "^12.4.1",
+        "dotenv": "^8.2.0",
+        "node-cron": "^2.0.3",
+        "node-html-to-image": "3.1.0",
+        "prettier": "^2.2.1",
+        "sudoku": "^0.0.3"
+    },
+    "type": "module"
 }

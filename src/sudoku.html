@@ -19,30 +19,30 @@
                 text-align: center;
                 vertical-align: middle;
             }
-            tbody td:nth-child(3n+1) {
+            tbody td:nth-child(3n + 1) {
                 border-right: 4px solid black;
             }
             tr td:nth-child(2) {
                 border-left: 4px solid black;
             }
-            tr:nth-child(3n) td:not(:first-child){
+            tr:nth-child(3n) td:not(:first-child) {
                 border-bottom: 4px solid black;
             }
-            tr:first-child td:not(:first-child){
-                border-top:  4px solid black;
+            tr:first-child td:not(:first-child) {
+                border-top: 4px solid black;
             }
-            tr:last-child td:not(:first-child){
+            tr:last-child td:not(:first-child) {
                 border-bottom: 4px solid black;
             }
             .initial {
                 font-weight: 800;
-                background-color:#D3D3D3;
+                background-color: #d3d3d3;
             }
             .row-index {
                 padding-right: 5px;
             }
             .last-played {
-                background-color: #7FFFD4;
+                background-color: #7fffd4;
             }
             .guess {
                 position: relative;
@@ -71,14 +71,16 @@
             </thead>
             <tbody>
                 {{#each rows}}
-                    <tr>
-                        <th class="row-index">{{inc @index}}</th>
-                        {{#each this}}
-                            <td class="{{#if this.initial}}initial{{/if}} {{#if this.lastPlayed}}last-played{{/if}} {{#if this.guess}}guess{{/if}}">
-                                {{this.value}}
-                            </td>
-                        {{/each}}
-                    </tr>
+                <tr>
+                    <th class="row-index">{{inc @index}}</th>
+                    {{#each this}}
+                    <td
+                        class="{{#if this.initial}}initial{{/if}} {{#if this.lastPlayed}}last-played{{/if}} {{#if this.guess}}guess{{/if}}"
+                    >
+                        {{this.value}}
+                    </td>
+                    {{/each}}
+                </tr>
                 {{/each}}
             </tbody>
         </table>

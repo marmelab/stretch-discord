@@ -1,12 +1,13 @@
 # stretch-discord
+
 A discord add-on that can run various bots:
 
-- A bot that remind us to stretch every hour
-- A bot to play sudoku
-
+-   A bot that remind us to stretch every hour
+-   A bot to play sudoku
 
 # For development
-##  Install
+
+## Install
 
 `make install`
 
