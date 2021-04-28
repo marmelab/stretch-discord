@@ -92,7 +92,6 @@ export const actionsFactory = (client) => {
     const sendStackoverflowNewTopics = async () => {
         const stackoverflowData = stackoverflow.getData();
         stackoverflowData.forEach(async (data) => {
-            console.log(data);
             const newTimestamp = Math.floor(new Date().getTime() / 1000);
             const topics = await stackoverflow.fetchNewTopics(
                 data.tag,
@@ -112,7 +111,7 @@ export const actionsFactory = (client) => {
                     });
                 });
             } else {
-                console.log(`No results for tag ${data.tag}`);
+                console.info(`No results for tag ${data.tag}`);
             }
             stackoverflow.updateTimestamp(data, newTimestamp);
         });
