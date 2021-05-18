@@ -169,3 +169,66 @@ export const getPuzzleLeaderboard = (puzzle) => {
         return { ...leaderboard, [cell.author]: score + 1 };
     }, {});
 };
+
+const isCellInvalid = (puzzle, indexRow, indexCol, value) => {
+  for (let row = 0; row < 9; row++) {
+    if (
+      indexRow != row &&
+      puzzle[row][indexCol].value &&
+      puzzle[row][indexCol].value === value &&
+      !puzzle[row][indexCol].guess
+    ) {
+      return true;
+    }
+  }
+
+  for (let col = 0; col < 9; col++) {
+    if (
+      indexCol != col &&
+      puzzle[indexRow][col].value &&
+      puzzle[indexRow][col].value === value &&
+      !puzzle[indexRow][col].guess
+    ) {
+      return true;
+    }
+  }
+
+  const cellSquareRow = Math.floor(indexRow / 3);
+  const cellSquareCol = Math.floor(indexCol / 3);
+  for (let row = 0; row < 9; row++) {
+    for (let col = 0; col < 9; col++) {
+      const currentSquareRow = Math.floor(row / 3);
+      const currentSquareCol = Math.floor(col / 3);
+      if (
+        cellSquareRow === currentSquareRow &&
+        cellSquareCol === currentSquareCol
+      ) {
+        if (
+          !(indexCol === col && indexRow === row) &&
+          puzzle[row][col].value &&
+          puzzle[row][col].value === value &&
+          !puzzle[row][col].guess
+        ) {
+          return true;
+        }
+      }
+    }
+  }
+
+  return false;
+};
+
+export const showInvalidNumbers = (puzzle) => {
+  return puzzle.map((_, indexRow) => {
+    return _.map((cell, indexCol) => {
+      if (cell.initial === true) {
+        return cell;
+      }
+      return {
+        ...cell,
+        invalid:
+          !cell.guess && isCellInvalid(puzzle, indexRow, indexCol, cell.value),
+      };
+    });
+  });
+};

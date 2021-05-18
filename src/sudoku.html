@@ -53,6 +53,9 @@
                 top: 0;
                 right: 0;
             }
+            .invalid {
+                color: red;
+            }
         </style>
     </head>
     <body>
@@ -75,7 +78,7 @@
                     <th class="row-index">{{inc @index}}</th>
                     {{#each this}}
                     <td
-                        class="{{#if this.initial}}initial{{/if}} {{#if this.lastPlayed}}last-played{{/if}} {{#if this.guess}}guess{{/if}}"
+                        class="{{#if this.initial}}initial{{/if}} {{#if this.lastPlayed}}last-played{{/if}} {{#if this.guess}}guess{{/if}} {{#if this.invalid}}invalid{{/if}}"
                     >
                         {{this.value}}
                     </td>
