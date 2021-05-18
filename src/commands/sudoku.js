@@ -130,7 +130,7 @@ export const play = {
                 rowChar: row,
                 colChar: col,
                 newValue: value,
-                author: message.author.username,
+                author: message.author,
             });
             await addSudokuToChannel(message.channel.id, newPuzzle);
             const attachment = await getSudokuImage(newPuzzle);
@@ -142,7 +142,7 @@ export const play = {
                 const leaderboard = Sudoku.getPuzzleLeaderboard(newPuzzle);
                 const leaderboardMessage = Object.entries(leaderboard).reduce(
                     (msg, [author, value]) => {
-                        return `${msg}${author}: ${value}\n`;
+                        return `${msg}<@${author}>: ${value}\n`;
                     },
                     "",
                 );
@@ -192,7 +192,7 @@ export const guess = {
                 colChar: col,
                 newValue: value,
                 isGuess: true,
-                author: message.author.username,
+                author: message.author,
             });
             await addSudokuToChannel(message.channel.id, newPuzzle);
             const attachment = await getSudokuImage(newPuzzle);
@@ -236,7 +236,7 @@ export const erase = {
                 puzzle,
                 rowChar: row,
                 colChar: col,
-                author: message.author.username,
+                author: message.author,
             });
             await addSudokuToChannel(message.channel.id, newPuzzle);
             const attachment = await getSudokuImage(newPuzzle);
@@ -269,7 +269,7 @@ export const totalDoubt = {
         try {
             const newPuzzle = Sudoku.totalDoubt({
                 puzzle,
-                author: message.author.username,
+                author: message.author,
             });
             await addSudokuToChannel(message.channel.id, newPuzzle);
             const attachment = await getSudokuImage(newPuzzle);
@@ -292,7 +292,7 @@ export const cleanAllGuess = {
         try {
             const newPuzzle = Sudoku.cleanAllGuess({
                 puzzle,
-                author: message.author.username,
+                author: message.author,
             });
             await addSudokuToChannel(message.channel.id, newPuzzle);
             const attachment = await getSudokuImage(newPuzzle);
@@ -320,7 +320,7 @@ export const blame = {
         }
         try {
             const author = Sudoku.blame({ puzzle, rowChar: row, colChar: col });
-            message.channel.send(`Le coupable est @${author} :scream:`);
+            message.channel.send(`Le coupable est ${author.toString()} :scream: :middle_finger:`);
         } catch (e) {
             console.error(e);
             message.channel.send(e.message);
@@ -340,7 +340,7 @@ export const leaderboard = {
             const leaderboard = Sudoku.getPuzzleLeaderboard(puzzle);
             const leaderboardMessage = Object.entries(leaderboard).reduce(
                 (msg, [author, value]) => {
-                    return `${msg}@${author}: ${value}\n`;
+                    return `${msg}<@${author}>: ${value}\n`;
                 },
                 "",
             );
