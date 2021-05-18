@@ -320,7 +320,7 @@ export const blame = {
         }
         try {
             const author = Sudoku.blame({ puzzle, rowChar: row, colChar: col });
-            message.channel.send(`Le coupable est ${author} :scream:`);
+            message.channel.send(`Le coupable est @${author} :scream:`);
         } catch (e) {
             console.error(e);
             message.channel.send(e.message);
@@ -340,7 +340,7 @@ export const leaderboard = {
             const leaderboard = Sudoku.getPuzzleLeaderboard(puzzle);
             const leaderboardMessage = Object.entries(leaderboard).reduce(
                 (msg, [author, value]) => {
-                    return `${msg}${author}: ${value}\n`;
+                    return `${msg}@${author}: ${value}\n`;
                 },
                 "",
             );
