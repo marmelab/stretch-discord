@@ -164,9 +164,9 @@ export const getPuzzleLeaderboard = (puzzle) => {
         if (cell.author === undefined) {
             return leaderboard;
         }
-        const score = leaderboard[cell.author] ?? 0;
+        const score = leaderboard[cell.author.id] ?? 0;
 
-        return { ...leaderboard, [cell.author]: score + 1 };
+        return { ...leaderboard, [cell.author.id]: score + 1 };
     }, {});
 };
 
